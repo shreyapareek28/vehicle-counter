@@ -19,7 +19,7 @@ st.sidebar.header("Configuration")
 conf = st.sidebar.slider("Confidence Threshold", 0.1, 0.9, 0.35, 0.05)
 iou = st.sidebar.slider("NMS IoU Threshold", 0.1, 0.9, 0.50, 0.05)
 tracker = st.sidebar.selectbox("Tracker", ["bytetrack.yaml", "botsort.yaml"])
-line_y = st.sidebar.slider("Counting Line Position (Vertical %)", 0.1, 0.9, 0.60, 0.05)
+line_y = st.sidebar.slider("Counting Line Position (Vertical %)", 0.1, 0.9, 0.42, 0.02)
 flip_dir = st.sidebar.checkbox("Swap IN / OUT Direction", value=False)
 show_trails = st.sidebar.checkbox("Show Motion Trails", value=True)
 
@@ -52,8 +52,8 @@ if video_path and st.button("▶ Start Vehicle Counter", type="primary"):
     line_str = f"0.05,{line_y:.2f},0.95,{line_y:.2f}"
     p1, p2 = parse_line(line_str, w, h)
 
-    with st.spinner("Loading YOLOv8 model..."):
-        detector = VehicleDetector("yolov8n.pt", conf, iou, 640, None, tracker)
+    with st.spinner("Loading YOLOv8s model..."):
+        detector = VehicleDetector("yolov8s.pt", conf, iou, 640, None, tracker)
     history = TrackHistory()
     counter = LineCounter(p1, p2, flip=flip_dir)
     viz = Visualizer(p1, p2, show_trails=show_trails)
