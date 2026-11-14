@@ -16,10 +16,15 @@ st.caption("Powered by YOLOv8 + ByteTrack")
 
 # --- Sidebar Controls ---
 st.sidebar.header("Configuration")
-conf = st.sidebar.slider("Confidence Threshold", 0.1, 0.9, 0.35, 0.05)
-iou = st.sidebar.slider("NMS IoU Threshold", 0.1, 0.9, 0.50, 0.05)
+conf = st.sidebar.slider("Confidence Threshold", 0.10, 0.90, 0.25, 0.05)
+iou = st.sidebar.slider("NMS IoU Threshold", 0.10, 0.90, 0.50, 0.05)
 tracker = st.sidebar.selectbox("Tracker", ["bytetrack.yaml", "botsort.yaml"])
-line_y = st.sidebar.slider("Counting Line Position (Vertical %)", 0.1, 0.9, 0.42, 0.02)
+
+st.sidebar.subheader("Counting Line Position")
+line_y1 = st.sidebar.slider("Left End Height (Y1)", 0.10, 0.90, 0.52, 0.02)
+line_y2 = st.sidebar.slider("Right End Height (Y2)", 0.10, 0.90, 0.34, 0.02)
+anchor_type = st.sidebar.selectbox("Tracking Anchor Point", ["center", "bottom"])
+
 flip_dir = st.sidebar.checkbox("Swap IN / OUT Direction", value=False)
 show_trails = st.sidebar.checkbox("Show Motion Trails", value=True)
 
@@ -36,6 +41,29 @@ if uploaded_file is not None:
 elif use_sample and os.path.exists("traffic.mp4"):
     video_path = "traffic.mp4"
 
+# --- Preview First Frame & Counting Line ---
+if video_path:
+    cap_preview = cv2.VideoCapture(video_path)
+    ok_prev, first_frame = cap_preview.read()
+    cap_preview.release()
+
+    if ok_prev:
+        h, w = first_frame.shape[:2]
+        line_str = f"0.05,{line_y1:.2f},0.95,{line_y2:.2f}"
+        p1, p2 = parse_line(line_str, w, h)
+
+        preview_img = first_frame.copy()
+        cv2.line(preview_img, p1, p2, (0, 0, 255), 3)
+        cv2.circle(preview_img, p1, 6, (255, 255, 0), -1)
+        cv2.circle(preview_img, p2, 6, (255, 255, 0), -1)
+
+        with st.expander("Preview Counting Line Alignment (Adjust Y1/Y2 in Sidebar)", expanded=False):
+            st.image(
+                cv2.cvtColor(preview_img, cv2.COLOR_BGR2RGB),
+                caption="Red line shows where vehicles will be counted",
+                use_container_width=True,
+            )
+
 # --- Run Detection & Counting ---
 if video_path and st.button("▶ Start Vehicle Counter", type="primary"):
     cap = cv2.VideoCapture(video_path)
@@ -49,11 +77,11 @@ if video_path and st.button("▶ Start Vehicle Counter", type="primary"):
     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or 1
     cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
-    line_str = f"0.05,{line_y:.2f},0.95,{line_y:.2f}"
+    line_str = f"0.05,{line_y1:.2f},0.95,{line_y2:.2f}"
     p1, p2 = parse_line(line_str, w, h)
 
-    with st.spinner("Loading YOLOv8s model..."):
-        detector = VehicleDetector("yolov8s.pt", conf, iou, 640, None, tracker)
+    with st.spinner("Loading YOLOv8 model..."):
+        detector = VehicleDetector("yolov8n.pt", conf, iou, 640, None, tracker)
     history = TrackHistory()
     counter = LineCounter(p1, p2, flip=flip_dir)
     viz = Visualizer(p1, p2, show_trails=show_trails)
@@ -78,7 +106,7 @@ if video_path and st.button("▶ Start Vehicle Counter", type="primary"):
 
         time_s = frame_idx / src_fps
         for d in detections:
-            point = d.bottom_center
+            point = d.center if anchor_type == "center" else d.bottom_center
             history.update(d.track_id, point, frame_idx)
             if counter.update(d.track_id, d.cls_name, point, frame_idx, time_s):
                 viz.flash_line()
