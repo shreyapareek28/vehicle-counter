@@ -1,5 +1,5 @@
 """
-MODULE 1 - DETECTION            (Owner: Member 1)
+MODULE 1 - DETECTION            
 -------------------------------------------------
 Wraps the YOLOv8 model. Given a frame it returns the vehicles found in it,
 already filtered to vehicle classes and with tracker IDs attached.
