@@ -1,5 +1,5 @@
 """
-MODULE 3a - VISUALISATION       (Owner: Member 3)
+MODULE 3a - VISUALISATION      
 -------------------------------------------------
 Draws everything the viewer sees: boxes, IDs, trails, the counting line and
 a live statistics panel.
