@@ -1,5 +1,5 @@
 """
-MODULE 2b - LINE COUNTER        (Owner: Member 2)
+MODULE 2b - LINE COUNTER        
 -------------------------------------------------
 Counts each tracked vehicle exactly once when it crosses a virtual line,
 separately for every vehicle type and for both directions.
