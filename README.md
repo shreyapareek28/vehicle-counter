@@ -1,8 +1,10 @@
 # Vehicle Detection and Counting System using YOLOv8
 
 Mini Project - Network & Signal Processing (NSP)
-Real-time detection, tracking and direction-wise counting of vehicles in traffic video.
+Real-time detection, tracking and direction-wise counting of vehicles in traffic video
 
+ ## 🚀 Live Demo
+Try the interactive web demo here: [Launch Live Demo](https://vehicle-counter.streamlit.app)
 
 `main.py` (the pipeline) was integrated by all three members.
 
