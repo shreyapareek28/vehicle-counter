@@ -106,7 +106,7 @@ if video_path and st.button("▶ Start Vehicle Counter", type="primary"):
 
         time_s = frame_idx / src_fps
         for d in detections:
-            point = d.center if anchor_type == "center" else d.bottom_center
+            point = d.bottom_center
             history.update(d.track_id, point, frame_idx)
             if counter.update(d.track_id, d.cls_name, point, frame_idx, time_s):
                 viz.flash_line()
