@@ -3,13 +3,6 @@
 Mini Project - Network & Signal Processing (NSP)
 Real-time detection, tracking and direction-wise counting of vehicles in traffic video.
 
-> **Team:** replace the placeholders below with your names and roll numbers.
-
-| Member | Name | Roll No. | Responsibility | Files |
-|---|---|---|---|---|
-| 1 | _Name 1_ | _..._ | Dataset, YOLO detection, model training | `src/detector.py`, `train.py` |
-| 2 | _Name 2_ | _..._ | Tracking and line-crossing counting logic | `src/tracker.py`, `src/counter.py`, `tests/` |
-| 3 | _Name 3_ | _..._ | Visualisation, evaluation, charts, report | `src/visualizer.py`, `src/plots.py`, `src/evaluate.py`, `docs/` |
 
 `main.py` (the pipeline) was integrated by all three members.
 
