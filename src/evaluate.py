@@ -1,5 +1,5 @@
 """
-MODULE 3c - EVALUATION          (Owner: Member 3)
+MODULE 3c - EVALUATION          
 -------------------------------------------------
 Two ways to measure the system, both used in the report:
 
