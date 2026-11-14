@@ -1,5 +1,5 @@
 """
-MODULE 2a - TRACK HISTORY       (Owner: Member 2)
+MODULE 2a - TRACK HISTORY       
 -------------------------------------------------
 Keeps the recent trajectory of every vehicle ID. Used for
   * drawing motion trails
