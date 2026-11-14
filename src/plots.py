@@ -1,5 +1,5 @@
 """
-MODULE 3b - CHARTS              (Owner: Member 3)
+MODULE 3b - CHARTS            
 -------------------------------------------------
 Creates report-ready figures from the counting results.
 """
